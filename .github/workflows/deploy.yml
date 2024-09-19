@@ -36,9 +36,10 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: S3 기존 파일들 전체 삭제
-        run: |
-          aws s3 rm --recursive s3://minak-web
+        run: aws s3 rm --recursive s3://minak-web
 
       - name: S3 빌드된 파일 업로드하기
-        run: |
-          aws s3 cp ./dist s3://minak-web/ --recursive
+        run: aws s3 cp ./dist s3://minak-web/ --recursive
+
+      - name: Cloudfront 캐시 무효화
+        run: aws cloudfront create-invalidation --distribution-id E1UVP9Y7J9G3U3 --paths "/*"
